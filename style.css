@@ -1,95 +1,122 @@
+/* --- USER PROVIDED STYLES --- */
 body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: #ffe6e6;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: 100vh;
+    background-color: #fce4ec;
+    /* Light pink background */
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
 }
 
-.content-box {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 400px;
+    /* Keeps box size stable */
+    justify-content: center;
     z-index: 10;
-    position: relative;
-    transition: opacity 0.5s ease;
+    /* Ensure UI sits above trails but below celebration overlay */
+}
+
+/* Top cute image */
+#topGif {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 h1 {
-    color: #ff4d4d;
+    color: #333;
+    font-size: 26px;
+    margin: 10px 0;
+    font-weight: bold;
+    line-height: 1.4;
 }
 
-.button-container {
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
     margin-top: 20px;
-}
-
-button {
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-#yes {
-    background-color: #4caf50;
-    color: white;
-}
-
-#yes:hover {
-    background-color: #45a049;
-    transform: scale(1.1);
-}
-
-#no {
-    background-color: #f44336;
-    color: white;
+    width: 100%;
     position: relative;
 }
 
-#no.shake {
-    animation: shake 0.3s ease-in-out infinite;
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
-.evil-face {
-    position: absolute;
-    font-size: 2rem;
-    pointer-events: none;
-}
-
-footer {
-    margin-top: 50px;
-    font-size: 0.9rem;
-    color: #555;
-    z-index: 10;
-}
-
-a {
-    color: #ff4d4d;
-    text-decoration: none;
+.btn {
+    padding: 12px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
     font-weight: bold;
 }
 
-a:hover {
-    text-decoration: underline;
+#yesBtn {
+    background-color: #ff4081;
+    color: white;
+    box-shadow: 0 4px 6px rgba(255, 64, 129, 0.3);
+    z-index: 10;
 }
+
+#yesBtn:hover {
+    transform: scale(1.05);
+    background-color: #f50057;
+}
+
+#noBtn {
+    background-color: #e0e0e0;
+    color: #333;
+    z-index: 10;
+    transition: all 0.2s ease;
+    /* Smooth movement */
+}
+
+#shyText {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* HIDDEN ELEMENTS FOR SUCCESS STATE (User's original) */
+#successContent {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#yayText {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0 20px 0;
+    color: #333;
+}
+
+#mindBlownGif {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* --- EXISTING FIREWORKS STYLES --- */
 
 /* Celebration Overlay */
 #celebration-container {
@@ -98,13 +125,21 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85); /* Darkened background for contrast */
+    background: rgba(0, 0, 0, 0.85);
+    /* Darkened background for contrast */
     z-index: 1000;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    pointer-events: none; /* Allow clicks to pass through if needed, though mostly visual */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#celebration-container:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .hidden {
@@ -130,7 +165,8 @@ a:hover {
 
 #celebration-text h1 {
     font-size: 3rem;
-    color: #ff69b4; /* Hot pink */
+    color: #ff69b4;
+    /* Hot pink */
     margin-bottom: 0.5rem;
 }
 
@@ -156,8 +192,217 @@ a:hover {
         opacity: 0;
         transform: scale(0.8);
     }
+
     100% {
         opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.cat-wrapper {
+    position: relative;
+    width: 160px;
+    margin: 0 auto 10px;
+    animation: floatCat 3s ease-in-out infinite;
+}
+
+#cat {
+    width: 100%;
+    pointer-events: none;
+}
+
+/* floating effect */
+@keyframes floatCat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* hearts */
+.heart {
+    position: absolute;
+    font-size: 18px;
+    opacity: 0;
+    animation: floatHeart 4s infinite;
+}
+
+.heart1 {
+    left: 10px;
+    animation-delay: 0s;
+}
+
+.heart2 {
+    right: 10px;
+    animation-delay: 2s;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(10px) scale(0.8);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-40px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* reactions */
+.cat-sad {
+    animation: shake 0.4s;
+}
+
+.cat-happy {
+    animation: happyJump 0.6s ease-in-out;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    50% {
+        transform: translateX(4px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes happyJump {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cat-wrapper {
+    position: relative;
+    width: 160px;
+    margin: 0 auto 10px;
+    animation: floatCat 3s ease-in-out infinite;
+}
+
+#cat {
+    width: 100%;
+    pointer-events: none;
+}
+
+/* floating effect */
+@keyframes floatCat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* hearts */
+.heart {
+    position: absolute;
+    font-size: 18px;
+    opacity: 0;
+    animation: floatHeart 4s infinite;
+}
+
+.heart1 {
+    left: 10px;
+    animation-delay: 0s;
+}
+
+.heart2 {
+    right: 10px;
+    animation-delay: 2s;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(10px) scale(0.8);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-40px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* reactions */
+.cat-sad {
+    animation: shake 0.4s;
+}
+
+.cat-happy {
+    animation: happyJump 0.6s ease-in-out;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    50% {
+        transform: translateX(4px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes happyJump {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
         transform: scale(1);
     }
 }

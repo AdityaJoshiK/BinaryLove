@@ -1,53 +1,63 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const noButton = document.getElementById('no');
-    const yesButton = document.getElementById('yes');
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
     const celebrationContainer = document.getElementById('celebration-container');
     const backgroundMusic = document.getElementById("background-music");
 
-    // --- EXISTING "NO" BUTTON BEHAVIOR ---
-    noButton.addEventListener('mouseenter', function () {
-        noButton.classList.add('shake');
-        generateEvilFaces();
-    });
+    // User designed elements to hide
+    const topGif = document.getElementById('topGif');
+    const btnGroup = document.getElementById('btnGroup');
+    const queryText = document.getElementById('questionText');
+    const shyText = document.getElementById('shyText');
 
-    noButton.addEventListener('mouseleave', function () {
-        noButton.classList.remove('shake');
-    });
+    // --- "NO" BUTTON EVASION LOGIC (User Provided + Padding) ---
+    function moveNoButton() {
+        // Get viewport dimensions
+        const width = window.innerWidth;
+        const height = window.innerHeight;
 
-    function generateEvilFaces() {
-        for (let i = 0; i < 5; i++) {
-            let evilFace = document.createElement('div');
-            evilFace.innerHTML = '😈';
-            evilFace.classList.add('evil-face');
-            document.body.appendChild(evilFace);
-            
-            // Random position
-            let x = Math.random() * window.innerWidth;
-            let y = Math.random() * window.innerHeight;
-            
-            evilFace.style.left = `${x}px`;
-            evilFace.style.top = `${y}px`;
-            
-            setTimeout(() => {
-                evilFace.remove();
-            }, 1000);
-        }
+        // Get button dimensions
+        const btnWidth = noBtn.offsetWidth;
+        const btnHeight = noBtn.offsetHeight;
+
+        // Calculate new position (random anywhere on screen)
+        // Using slight buffer to keep it reachable-ish but elusive
+        const padding = 50;
+        const newLeft = Math.max(padding, Math.random() * (width - btnWidth - padding));
+        const newTop = Math.max(padding, Math.random() * (height - btnHeight - padding));
+
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = newLeft + 'px';
+        noBtn.style.top = newTop + 'px';
+
+        // Show the shy text
+        if (shyText) shyText.style.opacity = '1';
     }
 
-    // --- NEW "YES" BUTTON BEHAVIOR ---
-    yesButton.addEventListener('click', function () {
+    noBtn.addEventListener('mouseover', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton); // Mobile support
+    noBtn.addEventListener('click', moveNoButton); // Just in case they click fast!
+
+    // --- "YES" BUTTON BEHAVIOR (Fireworks Flow) ---
+    yesBtn.addEventListener('click', function () {
         // 1. Play Music (if allowed)
         if (backgroundMusic) {
             backgroundMusic.play().catch(e => console.log("Audio autoplay blocked:", e));
         }
 
-        // 2. Show Celebration Overlay
+        // 2. Hide User UI Elements
+        if (topGif) topGif.style.display = 'none';
+        if (btnGroup) btnGroup.style.display = 'none';
+        if (queryText) queryText.style.display = 'none';
+        if (shyText) shyText.style.display = 'none';
+
+        // 3. Show Celebration Overlay
         celebrationContainer.classList.remove('hidden');
 
-        // 3. Start Fireworks
+        // 4. Start Fireworks
         startFireworks();
 
-        // 4. Start Floating Hearts after a delay
+        // 5. Start Floating Hearts after a delay
         setTimeout(startFloatingHearts, 2000);
     });
 
@@ -143,10 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const y = Math.random() * (canvas.height / 2); // Top half of screen
                 fireworks.push(new Firework(x, y));
             }
-            
-            // Also spawn fireworks on click for fun (optional, if user clicks background)
-            // But main trigger is the initial burst.
-            
+
             fireworks.forEach((firework, index) => {
                 firework.update();
                 firework.draw();
@@ -159,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Initial Burst
-        for(let i=0; i<5; i++) {
+        for (let i = 0; i < 5; i++) {
             setTimeout(() => {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * (canvas.height / 2);
@@ -183,12 +190,10 @@ document.addEventListener("DOMContentLoaded", function () {
             heart.style.animation = `floatUp ${Math.random() * 3 + 4}s linear forwards`; // 4-7s duration
             heart.style.opacity = Math.random();
             heart.style.zIndex = '999';
-            
+
             document.body.appendChild(heart);
-            
-            // Add CSS animation keyframes dynamically if not present, 
-            // but we can rely on inline styles for simple movement or just add to style.css.
-            // Let's add the keyframes via JS to be safe if not in CSS.
+
+            // Add CSS animation keyframes dynamically if not present
             if (!document.getElementById('float-style')) {
                 const style = document.createElement('style');
                 style.id = 'float-style';
