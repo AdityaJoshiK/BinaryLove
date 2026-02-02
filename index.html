@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=800, initial-scale=1.0">
+    <title>Binary Love: 1 or 1?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content-box">
+        <h1>Will you be my Valentine?</h1>
+        <div class="button-container">
+            <button id="yes">Yes</button>
+            <button id="no">No</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            <a href="https://github.com/TheDataDesk/Binary-Love" target="_blank">You can find the code HERE</a>
+        </p>
+        <p>Created by <strong>@TheDataDesk</strong> | Sirisha Padmasekhar</p>
+        <p>
+            <a href="https://github.com/TheDataDesk" target="_blank">Github</a> |
+            <a href="https://thedatadesk.github.io/sirishaportfolio/" target="_blank">Website</a> |
+            <a href="https://open.spotify.com/show/25yrMCp89hYWfSctVM6mHJ" target="_blank">Podcast</a> |
+            <a href="https://www.instagram.com/siri.storyline/" target="_blank">Instagram</a>
+        </p>
+    </footer>
+
+    <audio id="background-music" loop>
+        <source src="https://raw.githubusercontent.com/TheDataDesk/Binary-Love/main/song.mp3" type="audio/mp3">
+    </audio>
+
+    <div id="celebration-container" class="hidden">
+        <canvas id="fireworks-canvas"></canvas>
+        <div id="celebration-text">
+            <h1 class="fade-in">Yay! 💖 You said YES!</h1>
+            <h2 class="fade-in delay-2">Happy Valentine's Day 🌹</h2>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
+    <script defer src="script.js"></script>
+</body>
+</html>
